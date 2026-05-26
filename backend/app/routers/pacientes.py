@@ -99,7 +99,7 @@ def filtrar_con_rutinas(
     pairs = _get_my_patients(physio, db)
     result = []
     for user, profile in pairs:
-        if nombre and nombre.lower() not in user.name.lower():
+        if nombre and nombre.lower() not in (user.name or '').lower():
             continue
         count = db.query(AssignedSession).filter(AssignedSession.patient_id == user.id).count()
         resp = _to_response(user, profile)
@@ -116,7 +116,7 @@ def filtrar_pacientes(
     db: Session = Depends(get_db),
 ):
     pairs = _get_my_patients(physio, db)
-    result = [_to_response(u, p) for u, p in pairs if not nombre or nombre.lower() in u.name.lower()]
+    result = [_to_response(u, p) for u, p in pairs if not nombre or nombre.lower() in (u.name or '').lower()]
     return result[skip: skip + limit]
 
 
@@ -181,8 +181,9 @@ def update_paciente(paciente_id: str, req: PacienteUpdate, physio: User = Depend
         raise HTTPException(status_code=404, detail="Paciente no encontrado")
 
     if req.nombre is not None or req.apellidos is not None:
-        nombre = req.nombre if req.nombre is not None else user.name.split(" ", 1)[0]
-        apellidos = req.apellidos if req.apellidos is not None else (user.name.split(" ", 1)[1] if " " in user.name else "")
+        parts = (user.name or '').split(' ', 1)
+        nombre = req.nombre if req.nombre is not None else parts[0]
+        apellidos = req.apellidos if req.apellidos is not None else (parts[1] if len(parts) > 1 else '')
         user.name = f"{nombre} {apellidos}".strip()
     if req.correo is not None:
         user.email = req.correo

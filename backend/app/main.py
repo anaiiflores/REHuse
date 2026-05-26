@@ -13,17 +13,12 @@ from app.database import Base, engine
 from app.routers import (
     assigned_sessions,
     auth,
-    categorias,
-    ejercicio_rutinas,
     ejercicios_compat,
-    etiquetas,
     exercises,
-    imagenes_entrenamiento,
     me,
     notifications,
     pacientes,
     patients,
-    plantillas,
     rutinas,
     workout_sessions,
 )
@@ -74,15 +69,10 @@ app.include_router(exercises.router)
 app.include_router(assigned_sessions.router)
 app.include_router(workout_sessions.router)
 app.include_router(notifications.router)
-# Compat routers: Spanish-named endpoints for the ReHuse web frontend
+# Compat routers: endpoints con nombres en español para el frontend web ReHuse
 app.include_router(pacientes.router)
 app.include_router(ejercicios_compat.router)
-app.include_router(imagenes_entrenamiento.router)
 app.include_router(rutinas.router)
-app.include_router(ejercicio_rutinas.router)
-app.include_router(plantillas.router)
-app.include_router(categorias.router)
-app.include_router(etiquetas.router)
 
 
 @app.get("/health", tags=["health"])

@@ -219,10 +219,10 @@ VALUES (
 );
 
 -- Patient profiles
-INSERT INTO patient_profiles (id, user_id, physio_id, birth_date, weight, height)
+INSERT INTO patient_profiles (id, user_id, physio_id, dni, birth_date, weight, height, notes)
 VALUES
-    (UUID(), 'u-ana-0000-0000-0000-000000000001', 'u-fisio-000-0000-0000-000000000001', '1992-12-01', 62.5, 164.0),
-    (UUID(), 'u-carlos-00-0000-0000-000000000002', 'u-fisio-000-0000-0000-000000000001', '1988-05-15', 78.0, 178.0);
+    (UUID(), 'u-ana-0000-0000-0000-000000000001', 'u-fisio-000-0000-0000-000000000001', '12345678A', '1992-12-01', 62.5, 164.0, 'Paciente con dolor crónico en hombro derecho. Evitar ejercicios de impacto alto.'),
+    (UUID(), 'u-carlos-00-0000-0000-000000000002', 'u-fisio-000-0000-0000-000000000001', '87654321B', '1988-05-15', 78.0, 178.0, 'Recuperación post-operatoria de rodilla izquierda.');
 
 -- Exercises catalog
 INSERT INTO exercises (id, name, description, series, reps, minutes, angle, rhythm, rest_after_seconds)
@@ -233,7 +233,7 @@ VALUES
     ('e-rotat-0000-0000-0000-000000000004', 'Rotación de Hombros', 'Círculos completos hacia adelante y atrás. Mantén espalda recta.', 3, 10, NULL, 'FRONTAL', 'NORMAL', 10),
     ('e-pecto-0000-0000-0000-000000000005', 'Estiramiento Pectoral', 'Apoya el brazo en la pared a 90° y rota el cuerpo. Mantén 2 minutos.', NULL, NULL, 2, 'LATERAL', 'LENTO', 15);
 
--- Assigned session: physio assigns to Ana (today)
+-- Assigned session: physio assigns to Ana (today, already started)
 INSERT INTO assigned_sessions (id, physio_id, patient_id, title, scheduled_date, notes, difficulty, status, seen_by_patient)
 VALUES (
     'as-ana-0001-0000-0000-000000000001',
@@ -243,7 +243,7 @@ VALUES (
     CURDATE(),
     'Empezar suave. Avisar si hay dolor agudo.',
     'BAJA',
-    'PENDING',
+    'IN_PROGRESS',
     FALSE
 );
 
